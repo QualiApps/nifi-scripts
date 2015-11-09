@@ -5,7 +5,6 @@ from requests import get, codes
 from os import sep
 from urlparse import urlunparse
 
-
 class LeshanPoller(object):
     __slots__ = ["_LeshanPoller__data"]
 
@@ -18,16 +17,15 @@ class LeshanPoller(object):
 
     def get_urls(self, input):
 	"""
-	    Retrieves Leshan urls
+	    Retrieves Leshan url
 	"""
-	urls = [] 
-	services = loads(input)
+	url = []
+	service = loads(input)
 	
-	for service in services:
-	    parts = (self.scheme, ":".join((service["ServiceAddress"], str(service['ServicePort']))), self.api_url, "", "", "")
-	    urls.append(urlunparse(parts))
+	parts = (self.scheme, ":".join((service["ServiceAddress"], str(service['ServicePort']))), self.api_url, "", "", "")
+	url.append(urlunparse(parts))
 	
-	return urls
+	return url
 
     def get_data(self):
 	urls = self.get_urls(raw_input())
