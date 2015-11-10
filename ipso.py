@@ -1,20 +1,634 @@
 #!/usr/bin/env python
 
-
 IPSO_OBJECTS = {
+    0: {
+        "required": (),
+        "title": "LWM2M Security",
+        "attrib": [
+            {
+                "attr_type": "str",
+                "description": "LWM2M Server URI",
+                "id": "0",
+                "methods": "R",
+                "range_value": "0-255",
+                "units": ""
+            },
+            {
+                "attr_type": "bool",
+                "description": "Bootstrap Server",
+                "id": "1",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Security Mode",
+                "id": "2",
+                "methods": "R",
+                "range_value": "0-3",
+                "units": ""
+            },
+            {
+                "attr_type": "opaque",
+                "description": "Public Key or Identity",
+                "id": "3",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "opaque",
+                "description": "Server Public Key or Identity",
+                "id": "4",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "opaque",
+                "description": "Secret Key",
+                "id": "5",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "SMS Security Mode",
+                "id": "6",
+                "methods": "R",
+                "range_value": "0-255",
+                "units": ""
+            },
+            {
+                "attr_type": "opaque",
+                "description": "SMS Binding Key Parameters",
+                "id": "7",
+                "methods": "E",
+                "range_value": "6",
+                "units": ""
+            },
+            {
+                "attr_type": "opaque",
+                "description": "SMS Binding Secret Keys",
+                "id": "8",
+                "methods": "E",
+                "range_value": "32-48",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "LWM2M Server SMS Number",
+                "id": "9",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Short Server ID",
+                "id": "10",
+                "methods": "R",
+                "range_value": "1-65535",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Client Hold Off Time",
+                "id": "11",
+                "methods": "R",
+                "range_value": "",
+                "units": "s"
+            }
+        ]
+    },
+    1: {
+        "required": (),
+        "title": "LWM2M Server",
+        "attrib": [
+            {
+                "attr_type": "int",
+                "description": "Short Server ID",
+                "id": "0",
+                "methods": "R",
+                "range_value": "1-65535",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Lifetime",
+                "id": "1",
+                "methods": "RW",
+                "range_value": "",
+                "units": "s"
+            },
+            {
+                "attr_type": "int",
+                "description": "Default Minimum Period",
+                "id": "2",
+                "methods": "RW",
+                "range_value": "",
+                "units": "s"
+            },
+            {
+                "attr_type": "int",
+                "description": "Default Maximum Period",
+                "id": "3",
+                "methods": "RW",
+                "range_value": "",
+                "units": "s"
+            },
+            {
+                "attr_type": "",
+                "description": "Disable",
+                "id": "4",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Disable Timeout",
+                "id": "5",
+                "methods": "RW",
+                "range_value": "",
+                "units": "s"
+            },
+            {
+                "attr_type": "bool",
+                "description": "Notification Storing When Disabled or Offline",
+                "id": "6",
+                "methods": "RW",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Binding",
+                "id": "7",
+                "methods": "RW",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "",
+                "description": "Registration Update Trigger",
+                "id": "8",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            }
+        ]
+    },
+    2: {
+        "required": (),
+        "title": "LWM2M Access control",
+        "attrib": [
+            {
+                "attr_type": "int",
+                "description": "Object ID",
+                "id": "0",
+                "methods": "R",
+                "range_value": "1-65535",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Object Instance ID",
+                "id": "1",
+                "methods": "R",
+                "range_value": "0-65535",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "ACL",
+                "id": "2",
+                "methods": "RW",
+                "range_value": "2",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Access Control Owner",
+                "id": "3",
+                "methods": "RW",
+                "range_value": "0-65535",
+                "units": ""
+            }
+        ]
+    },
     3: {
         "required": (9, 10),
-        "title": "Device"
+        "title": "Device",
+        "attrib": [
+            {
+                "attr_type": "str",
+                "description": "Manufacturer",
+                "id": "0",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Model Number",
+                "id": "1",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Serial Number",
+                "id": "2",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Firmware Version",
+                "id": "3",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "",
+                "description": "Reboot",
+                "id": "4",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "",
+                "description": "Factory Reset",
+                "id": "5",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Available Power Sources",
+                "id": "6",
+                "methods": "R",
+                "range_value": "0-7",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Power Source Voltage",
+                "id": "7",
+                "methods": "R",
+                "range_value": "",
+                "units": "mV"
+            },
+            {
+                "attr_type": "int",
+                "description": "Power Source Current",
+                "id": "8",
+                "methods": "R",
+                "range_value": "",
+                "units": "mA"
+            },
+            {
+                "attr_type": "int",
+                "description": "Battery Level",
+                "id": "9",
+                "methods": "R",
+                "range_value": "0-100",
+                "units": "%"
+            },
+            {
+                "attr_type": "int",
+                "description": "Memory Free",
+                "id": "10",
+                "methods": "R",
+                "range_value": "",
+                "units": "KB"
+            },
+            {
+                "attr_type": "int",
+                "description": "Error Code",
+                "id": "11",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "",
+                "description": "Reset Error Code",
+                "id": "12",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "time",
+                "description": "Current Time",
+                "id": "13",
+                "methods": "RW",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "UTC Offset",
+                "id": "14",
+                "methods": "RW",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Timezone",
+                "id": "15",
+                "methods": "RW",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Supported Binding and Modes",
+                "id": "16",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            }
+        ]
+    },
+    4: {
+        "required": (),
+        "title": "Connectivity Monitoring",
+        "attrib": [
+            {
+                "attr_type": "int",
+                "description": "Network Bearer",
+                "id": "0",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Available Network Bearer",
+                "id": "1",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Radio Signal Strength",
+                "id": "2",
+                "methods": "R",
+                "range_value": "",
+                "units": "dBm"
+            },
+            {
+                "attr_type": "int",
+                "description": "Link Quality",
+                "id": "3",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "IP Addresses",
+                "id": "4",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Router IP Addresses",
+                "id": "5",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Link Utilization",
+                "id": "6",
+                "methods": "R",
+                "range_value": "0-100",
+                "units": "%"
+            },
+            {
+                "attr_type": "str",
+                "description": "APN",
+                "id": "7",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Cell ID",
+                "id": "8",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "SMNC",
+                "id": "9",
+                "methods": "R",
+                "range_value": "",
+                "units": "%"
+            },
+            {
+                "attr_type": "int",
+                "description": "SMCC",
+                "id": "10",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            }
+        ]
     },
     5: {
         "required": (3,),
-        "title": "Firmware update"
-    }
-}
-
-aaa = """
-    {
-        3200: [
+        "title": "Firmware Update",
+        "attrib": [
+            {
+                "attr_type": "opaque",
+                "description": "Package",
+                "id": "0",
+                "methods": "W",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "str",
+                "description": "Package URI",
+                "id": "1",
+                "methods": "W",
+                "range_value": "0-255",
+                "units": ""
+            },
+            {
+                "attr_type": "",
+                "description": "Update",
+                "id": "2",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "State",
+                "id": "3",
+                "methods": "R",
+                "range_value": "1-3",
+                "units": ""
+            },
+            {
+                "attr_type": "bool",
+                "description": "Update Supported Objects",
+                "id": "4",
+                "methods": "RW",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Update Result",
+                "id": "5",
+                "methods": "R",
+                "range_value": "0-6",
+                "units": ""
+            }
+        ]
+    },
+    6: {
+        "required": (0, 1),
+        "title": "Location",
+        "attrib": [
+            {
+                "attr_type": "str",
+                "description": "Latitude",
+                "id": "0",
+                "methods": "R",
+                "range_value": "",
+                "units": "Deg"
+            },
+            {
+                "attr_type": "str",
+                "description": "Longitude",
+                "id": "1",
+                "methods": "R",
+                "range_value": "",
+                "units": "Deg"
+            },
+            {
+                "attr_type": "str",
+                "description": "Altitude",
+                "id": "2",
+                "methods": "R",
+                "range_value": "",
+                "units": "m"
+            },
+            {
+                "attr_type": "str",
+                "description": "Uncertainty",
+                "id": "3",
+                "methods": "R",
+                "range_value": "",
+                "units": "m"
+            },
+            {
+                "attr_type": "opaque",
+                "description": "Velocity",
+                "id": "4",
+                "methods": "R",
+                "range_value": "",
+                "units": "Refers to 3GPP GAD specs"
+            },
+            {
+                "attr_type": "time",
+                "description": "Timestamp",
+                "id": "5",
+                "methods": "R",
+                "range_value": "0-6",
+                "units": ""
+            }
+        ]
+    },
+    7: {
+        "required": (),
+        "title": "Connectivity Statistics",
+        "attrib": [
+            {
+                "attr_type": "int",
+                "description": "SMS Tx Counter",
+                "id": "0",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "SMS Rx Counter",
+                "id": "1",
+                "methods": "R",
+                "range_value": "",
+                "units": ""
+            },
+            {
+                "attr_type": "int",
+                "description": "Tx Data",
+                "id": "2",
+                "methods": "R",
+                "range_value": "",
+                "units": "Kilo-Bytes"
+            },
+            {
+                "attr_type": "int",
+                "description": "Rx Data",
+                "id": "3",
+                "methods": "R",
+                "range_value": "",
+                "units": "Kilo-Bytes"
+            },
+            {
+                "attr_type": "int",
+                "description": "Max Message Size",
+                "id": "4",
+                "methods": "R",
+                "range_value": "",
+                "units": "Byte"
+            },
+            {
+                "attr_type": "int",
+                "description": "Average Message Size",
+                "id": "5",
+                "methods": "R",
+                "range_value": "",
+                "units": "Byte"
+            },
+            {
+                "attr_type": "",
+                "description": "StartOrReset",
+                "id": "5",
+                "methods": "E",
+                "range_value": "",
+                "units": ""
+            }
+        ]
+    },
+    3200: {
+        "required": (),
+        "title": "Digital Input",
+        "attrib": [
             {
                 "attr_type": "bool",
                 "description": "Digital Input State",
@@ -79,12 +693,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Digital Input",
-        "id": 3200
+        ]
     },
-    {
-        3201: [
+    3201: {
+        "required": (),
+        "title": "Digital Output",
+        "attrib": [
             {
                 "attr_type": "bool",
                 "description": "Digital Output State",
@@ -109,12 +723,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Digital Output",
-        "id": 3201
+        ]
     },
-    {
-        3202: [
+    3202: {
+        "required": (),
+        "title": "Analogue Input",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Analog Input Current Value",
@@ -179,12 +793,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Analogue Input",
-        "id": 3202
+        ]
     },
-    {
-        3203: [
+    3203: {
+        "required": (),
+        "title": "Analogue Output",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Min Range Value",
@@ -217,12 +831,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Analogue Output",
-        "id": 3203
+        ]
     },
-    {
-        3300: [
+    3300: {
+        "required": (),
+        "title": "Generic Sensor",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Min Measured Value",
@@ -295,12 +909,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Generic Sensor",
-        "id": 3300
+        ]
     },
-    {
-        3301: [
+    3301: {
+        "required": (),
+        "title": "Illuminance Sensor",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Min Measured Value",
@@ -357,12 +971,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Illuminance Sensor",
-        "id": 3301
+        ]
     },
-    {
-        3302: [
+    3302: {
+        "required": (),
+        "title": "Presence Sensor",
+        "attrib": [
             {
                 "attr_type": "bool",
                 "description": "Digital Input State",
@@ -411,12 +1025,12 @@ aaa = """
                 "range_value": "",
                 "units": "ms"
             }
-        ],
-        "description": "Presence Sensor",
-        "id": 3302
+        ]
     },
-    {
-        3303: [
+    3303: {
+        "required": (),
+        "title": "Temperature Sensor",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Min Measured Value",
@@ -473,12 +1087,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Temperature Sensor",
-        "id": 3303
+        ]
     },
-    {
-        3304: [
+    3304: {
+        "required": (),
+        "title": "Humidity Sensor",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Min Measured Value",
@@ -535,12 +1149,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Humidity Sensor",
-        "id": 3304
+        ]
     },
-    {
-        3305: [
+    3305: {
+        "required": (),
+        "title": "Power Measurement",
+        "attrib": [
             {
                 "attr_type": "opaque",
                 "description": "Reset Min and Max Measured Values",
@@ -685,12 +1299,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Power Measurement",
-        "id": 3305
+        ]
     },
-    {
-        3306: [
+    3306: {
+        "required": (),
+        "title": "Actuation",
+        "attrib": [
             {
                 "attr_type": "str",
                 "description": "Application Type",
@@ -731,12 +1345,12 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Actuation",
-        "id": 3306
+        ]
     },
-    {
-        3308: [
+    3308: {
+        "required": (),
+        "title": "Set Point",
+        "attrib": [
             {
                 "attr_type": "str",
                 "description": "Sensor Units",
@@ -769,12 +1383,12 @@ aaa = """
                 "range_value": "",
                 "units": "units"
             }
-        ],
-        "description": "Set Point",
-        "id": 3308
+        ]
     },
-    {
-        3310: [
+    3310: {
+        "required": (),
+        "title": "Load Control",
+        "attrib": [
             {
                 "attr_type": "str",
                 "description": "Event Identifier",
@@ -823,12 +1437,12 @@ aaa = """
                 "range_value": "0-100",
                 "units": "%"
             }
-        ],
-        "description": "Load Control",
-        "id": 3310
+        ]
     },
-    {
-        3311: [
+    3311: {
+        "required": (),
+        "title": "Light Control",
+        "attrib": [
             {
                 "attr_type": "str",
                 "description": "Sensor Units",
@@ -885,12 +1499,12 @@ aaa = """
                 "range_value": "",
                 "units": "s"
             }
-        ],
-        "description": "Light Control",
-        "id": 3311
+        ]
     },
-    {
-        3312: [
+    3312: {
+        "required": (),
+        "title": "Power Control",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Cumulative active power",
@@ -931,12 +1545,12 @@ aaa = """
                 "range_value": "",
                 "units": "s"
             }
-        ],
-        "description": "Power Control",
-        "id": 3312
+        ]
     },
-    {
-        3313: [
+    3313: {
+        "required": (),
+        "title": "Accelometer",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Min Range Value",
@@ -985,12 +1599,12 @@ aaa = """
                 "range_value": "",
                 "units": "units"
             }
-        ],
-        "description": "Accelometer",
-        "id": 3313
+        ]
     },
-    {
-        3314: [
+    3314: {
+        "required": (),
+        "title": "Magnetometer",
+        "attrib": [
             {
                 "attr_type": "str",
                 "description": "Sensor Units",
@@ -1031,12 +1645,12 @@ aaa = """
                 "range_value": "360",
                 "units": "deg"
             }
-        ],
-        "description": "Magnetometer",
-        "id": 3314
+        ]
     },
-    {
-        3315: [
+    3315: {
+        "required": (),
+        "title": "Barometer",
+        "attrib": [
             {
                 "attr_type": "float",
                 "description": "Min Measured Value",
@@ -1093,8 +1707,7 @@ aaa = """
                 "range_value": "",
                 "units": ""
             }
-        ],
-        "description": "Barometer",
-        "id": 3315
+        ]
     }
-    """
+}
+
