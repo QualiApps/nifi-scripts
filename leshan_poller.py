@@ -2,7 +2,7 @@
 
 from json import loads, dumps
 from requests import get, codes
-from os import sep
+from os import sep, path
 from urlparse import urlunparse
 
 
@@ -43,7 +43,7 @@ class LeshanPoller(object):
 	        for object in device['objectLinks']:
 		    if str(object['objectId']) not in self.ignore_obj:
 		        values = object_values(url, device['endpoint'], object['url'])
-                        self.add_metadata(values, device, object)
+                        self.update_metadata(values, device, object)
 	                self.__data.append(values)
 
     @staticmethod
@@ -78,9 +78,9 @@ class LeshanPoller(object):
 	return object_values
 
     @staticmethod
-    def add_metadata(values, device, object):
+    def update_metadata(values, device, object):
 	'''
-	    Add metadata to the response content
+	    Update metadata to the response content
 	    :param values - response content
 	    :param device - device info
 	    :param object - object info
@@ -88,9 +88,9 @@ class LeshanPoller(object):
 	values['endpoint'] = device['endpoint']
 	values['registrationId'] = device['registrationId']
 	values['registrationDate'] = device['registrationDate']
-	values['address'] = device['address']
 	values['objectId'] = object['objectId']
 	values['objectInstanceId'] = object['objectInstanceId']
+	del values['status']
 
     @property
     def data(self):
@@ -108,7 +108,8 @@ class LeshanPoller(object):
 	ids = []
 	import ConfigParser
         config = ConfigParser.ConfigParser()
-        config.read(self.cfg)
+	script_path = path.dirname(path.realpath(__file__))
+        config.read(sep.join((script_path, self.cfg)))
         except_ids = config.get('Except', 'ObjectIds', None)
         if except_ids:
             ids = except_ids.split(',')

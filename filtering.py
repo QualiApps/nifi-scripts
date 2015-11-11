@@ -3,46 +3,52 @@
 from sys import exit, argv
 from json import loads, dumps
 from ipso import IPSO_OBJECTS as ipso
-from time import time
+from syslog import syslog, LOG_ERR
 
 
 class FilterIPSO(object):
-    def __init__(self, objectId, raw_data):
+    def __init__(self, raw_data):
 	self.__data = []
 	self.raw_data = raw_data
-	self.process(objectId)
+	self.process(self.raw_data['objectId'])
 
     def process(self, id):
+	'''
+	    Data processing
+	    :param id - the object id
+	'''
 	object_info = ipso.get(id)
 	if object_info:
-	    self.create_points(object_info)
+	    self.filtering(object_info)
 
-    def create_points(self, obj):
-	raw_resources = self.get_resources()
-	for resource in raw_resources:
-	    if resource['id'] in obj['required']:
+    def filtering(self, obj):
+	'''
+	    Updates incoming content
+	    :param obj - object info
+	'''
+	requered_res = []
+        raw_resources = self.get_resources()
+        for resource in raw_resources:
+            if resource['id'] in obj['required']:
 		res_attribs = self.get_obj_attr(resource['id'], obj['attrib'])
-		tags = {
-		    "endpoint": self.raw_data.get('endpoint'),
-		    "object_id": self.raw_data.get('objectId'),
-		    "instance_id": self.raw_data.get('objectInstanceId'),
-		    "resource_id": resource['id'],
-		    "resource_title": self.convert_name(res_attribs['description'])
-		}
-		values = {
-		    "value": resource.get('value', 0)
-		}
-		point = self.format_to_line(
-			    self.convert_name(obj.get('title')), 
-			    tags,
-			    values,
-			    int(time())
-			)
+		resource['title'] = res_attribs['description']
+		requered_res.append(resource)
+	else:
+	    if requered_res:
+		data = self.set_resources(requered_res)
+		data['title'] = obj.get('title')
+	    else:
+		data = ''
+	    self.__data = data
 
-		self.__data.append(point)
-    
     @staticmethod
     def get_obj_attr(res_id, attrib):
+	'''
+	    Finds particular resource
+	    :param res_id - id resource
+	    :param attrib - available resources
+	    :return dict
+	'''
 	response = None
 	for attr in attrib:
 	    if int(attr['id']) == res_id:
@@ -50,33 +56,38 @@ class FilterIPSO(object):
 		break
 
 	return response
-	
-
-    def format_to_line(self, measurement, tags, values, timestamp):
-	return '%s%s %s %s' % (measurement, ',' + self.dict_to_line(tags) if tags else '', self.dict_to_line(values), timestamp)
-
-    @staticmethod
-    def dict_to_line(items):
-	return ','.join(['%s=%s' % (k,v) for k,v in items.iteritems()])
-
-    @staticmethod
-    def convert_name(name):
-	return name.lower().replace(" ", "_")
 
     def get_resources(self):
+	'''
+	    Retrieves resources from object
+	    :return list
+	'''
 	return self.raw_data.get('content').get('resources')
+
+    def set_resources(self, res):
+	'''
+	    Sets new resources
+	    :param res - requered resources
+	    :return json
+	'''
+        self.raw_data['content']['resources'] = res
+	return self.raw_data
 
     @property
     def data(self):
-	return "\n".join(self.__data)
+	'''
+	    Dumps data to json
+	'''
+	return dumps(self.__data)
 
     def __str__(self):
 	return self.data
 
 
 if __name__ == '__main__':
-    if len(argv) == 2:
-	input_data = raw_input()
-        print FilterIPSO(int(argv[1]), loads(input_data))
+    try:
+        input_data = loads(raw_input())
+        print FilterIPSO(input_data)
+    except Exception as error:
+	syslog(LOG_ERR, "Resource filtering: " + str(error))
 
-exit(0)
