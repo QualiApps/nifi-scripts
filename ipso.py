@@ -1028,7 +1028,7 @@ IPSO_OBJECTS = {
         ]
     },
     3303: {
-        "required": (),
+        "required": (5700,),
         "title": "Temperature Sensor",
         "attrib": [
             {
