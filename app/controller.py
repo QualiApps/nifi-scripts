@@ -39,7 +39,7 @@ class Processor(object):
 	try:
 	    if rules:
 		# if any rules are available
-	        for resource in stream['content']['resources']:
+	        for resource in stream['resources']:
 		    res_id = resource['id']
 		    rule = self.get_obj(rules[str(obj_id)], res_id)
 		    if rule:
