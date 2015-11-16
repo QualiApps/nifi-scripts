@@ -55,7 +55,8 @@ class Processor(object):
 				"resource": res_id,
 				"current_value": resource['value'],
 				"threshold": rule['value'],
-				"handler": rule['handler']
+				"handler": rule['handler'],
+                                "args": rule['args']
 			    })
 	except Exception as error:
 	    self.add_error(error.__str__())
@@ -63,10 +64,10 @@ class Processor(object):
     def add_error(self, message):
 	'''
 	    Init errors
-	    :param message - error message		 
+	    :param message - error message
 	'''
 	self.resp_handlers.append({
-		"status": self.status_error, 
+		"status": self.status_error,
 		"message": message
 	})
 
@@ -86,7 +87,7 @@ class Processor(object):
 	    item = None
 
 	return item
-	
+
     def threshold(self, rule, value):
 	'''
 	    Applies an operator and invokes action
@@ -102,7 +103,7 @@ class Processor(object):
 	'''
 	    Gets the rules
 	    :return list of rules
-	'''	
+	'''
 	config = []
 	conf_file = sep.join((self.script_path, self.conf_path))
 
@@ -110,7 +111,7 @@ class Processor(object):
 	    with open(conf_file) as conf:
 	        config = conf.read()
 	        config = loads(config) if config else []
-	
+
 	return config
 
     @property
